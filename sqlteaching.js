@@ -344,7 +344,8 @@ var levels = [{'name': 'SELECT *',
                                      ['Steve Urkel', null],
                                      ['Homer Simpson', null]]},
                'prompt': 'These queries are starting to get pretty long! <br/><br/>In the previous exercise, we ran a query containing the tables <strong>character</strong>, <strong>tv_show</strong>, and <strong>character_tv_show</strong>.  We can write a shorter query if we used aliases for those tables.  Basically, we create a "nickname" for that table. <br/><br/> If you want to use an alias for a table, you add <code>AS *alias_name*</code> after the table name. <br/><br/> For example, to use left joins between characters and tv shows with aliases, you would run: <br/> <code>SELECT c.name, t.name<br/>FROM character AS c<br/>LEFT JOIN character_tv_show AS ct<br/>ON c.id = ct.character_id<br/>LEFT JOIN tv_show AS t<br/>ON ct.tv_show_id = t.id;</code> <br/><br/> As you can see, it is shorter than the query in the previous exercise.<br/><br/> Can you use left joins to match character names with the actors that play them, and use aliases to make the query shorter?  The aliases for <strong>character</strong>, <strong>character_actor</strong>, and <strong>actor</strong> should be <strong>c</strong>, <strong>ca</strong>, and <strong>a</strong>. <br/><br/>Select the columns: <strong>c</strong>.<em>name</em>, <strong>a</strong>.<em>name</em>'},
-
+               
+               
               {'name': 'Column alias',
                'short_name': 'column_alias',
                'database_type': 'tv_extra',
@@ -356,7 +357,18 @@ var levels = [{'name': 'SELECT *',
                                      ['Steve Urkel', null],
                                      ['Homer Simpson', null]]},
                'prompt': 'In addition to making aliases for tables, you can also make them for columns. <br/><br/>  This clears up confusion on which column is which.  In the previous exercise, both columns in the result are simply called "name", and that can be confusing. <br/><br/> If you want to use an alias for a column, you add <code>AS *alias_name*</code> after the column name. <br/><br/>  If we wanted to use left joins between character names and TV shows and clearly denote which column has character names, and which has TV show names, it would look like this: <br/><code>SELECT character.name AS character, tv_show.name AS name<br/> FROM character <br/>LEFT JOIN character_tv_show<br/> ON character.id = character_tv_show.character_id<br/> LEFT JOIN tv_show<br/> ON character_tv_show.tv_show_id = tv_show.id;</code> <br/><br/>Can you use left joins to match character names with the actors that play them, and use aliases to call the two columns returned <em>character</em> and <em>actor</em>?'},
-
+               
+               {'name':'More Left Joins',
+               'short_name':'left_joins_2',
+               'database_type':'students _ joins',
+               'answer':{'columns':['student id', 'student', 'course', 'grade'],
+               'values':[['1', 'Teddy', 'Underwater Basket Weaving 101', 'A+'],
+                       ['2', 'Marc','History','F'],
+                       ['3','Mike S','Underwater Basket Weaving 101', 'C+'],
+                     ['3', 'Mike S', 'History', 'A+'],
+                   ['4','Mike W', 'History', 'D']]},
+                   'prompt':'In prior exercises, we used joins to match up values from multiple tables.  Now, we can use our knowledge of nested queries, aliases, and joins to put more than two tables together. '
+             },
               {'name': 'Self joins',
                'short_name': 'self_join',
                'database_type': 'self_join',
@@ -574,6 +586,13 @@ var load_database = function(db_type) {
       sqlstr += "INSERT INTO fighters VALUES (4, 'Innocent Bystander', null, null, null);";
       table_names = ['fighters'];
       break;
+      case 'students_joins':
+      sqlstr = "CREATE TABLE students (id int, student char);";
+      sqlstr+= "INSERT INTO students VALUES(1,'Teddy'),(2, 'Marc'), (3,'Mike S'), (4,'Mike W');";
+      sqlstr+="CREATE TABLE courses (id int, course char);";
+      sqlstr+= "INSERT INTO TABLE courses VALUES(1,'Underwater Basket Weaving 101'), (2,'History');";
+      sqlstr+="CREATE TABLE students_courses(student_id int, course_id int, grade char);";
+      sqlstr+= "INSERT INTO students_courses VALUES(1,1,'A+'), (2,2,'F'),(3,1,'C+'),(3,2,'A+'),(4,2,'D');";
   }
 
   database.run(sqlstr);
